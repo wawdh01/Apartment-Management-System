@@ -33,4 +33,19 @@ router.get('/', auth, async (req, res)=> {
 });
 
 
+router.post('/delete', auth, async(req, res)=>{
+    try {
+        const {id} = req.body;
+        const isDeleted = await Parcel.deleteOne({_id: id});
+        if (isDeleted.n == 0) {
+            return res.status(400).json({errorMessage: "The Parcel can not be deleted."});
+        }
+        return res.status(200);
+    }
+    catch (e) {
+        console.error(err);
+        res.status(500).send();
+    }
+})
+
 module.exports = router;

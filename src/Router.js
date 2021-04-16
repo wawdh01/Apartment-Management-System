@@ -4,7 +4,8 @@ import Login from './Components/Auth/Login';
 import AuthContext from './Context/AuthContext';
 import NavbarCustom from './Components/Layouts/NavbarCustom';
 import Home from './Components/Layouts/HomeLayout/Home';
-import Notice from './Components/Layouts/Notice';
+import Notice from './Components/Layouts/Notice/Notice';
+import Parcel from './Components/Layouts/Parcel/Parcel';
 
 function Router() {
 
@@ -29,6 +30,9 @@ function Router() {
                 {
                     loggedIn === true && (
                         <>
+                            <Route exact  path="/">
+                                <Home></Home>
+                            </Route>
                             <Route exact  path="/register">
                                 <div>Register</div>
                             </Route>
@@ -36,7 +40,7 @@ function Router() {
                                 <Notice></Notice>
                             </Route>
                             <Route exact  path="/parcel">
-                                <div>Parcel</div>
+                                <Parcel></Parcel>
                             </Route>
                         </>
                     )
