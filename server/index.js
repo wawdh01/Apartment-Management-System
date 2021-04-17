@@ -32,3 +32,4 @@ mongoose.connect(process.env.MDB_CONNECT,{useNewUrlParser: true, useUnifiedTopol
 app.use("/auth", require('./routers/userRouter'));
 app.use("/notice", require('./routers/noticeRouter'));
 app.use("/parcel", require('./routers/parcelRouter'));
+app.use("/discussion", require('./routers/discussionRouter'));

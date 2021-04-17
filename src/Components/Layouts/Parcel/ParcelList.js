@@ -33,7 +33,7 @@ function ParcelList({parcels}) {
                 <Card border="dark" style={{padding: "20px", margin: "20px", borderRadius: "10px", borderWidth: "2px", boxShadow: "2px 2px blue", width: "400px"}}>
                     <Card.Img variant="top" src={parcelPic} />
                     <Card.Header><Card.Title>{parcel.parcel_id}</Card.Title></Card.Header>
-                    <Card.Body style={{ width: '18rem', marginRight: "10px"}}>
+                    <Card.Body style={{marginRight: "10px"}}>
                         <Card.Subtitle className="mb-2 text-muted">{parcel.email}</Card.Subtitle>
                         <Card.Text>{parcel.name}</Card.Text>
                         {

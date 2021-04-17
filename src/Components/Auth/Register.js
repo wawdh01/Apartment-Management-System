@@ -70,8 +70,8 @@ function Register() {
                         <Form.Control type="password" placeholder="Password" onChange={(e)=>setPasswordVerify(e.target.value)} value={passwordVerify} />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>User Type</Form.Label>
-                        <select onChange={(e)=>setLogin_typeStr(e.target.value)} value={login_typeStr}>
+                        <Form.Label style={{marginRight: "20px"}}>User Type</Form.Label>
+                        <select onChange={(e)=>setLogin_typeStr(e.target.value)} value={login_typeStr} style={{borderRadius: "5px"}}>
                             <option value="1" > Secretary</option>
                             <option value="2"> Flat Owner</option>
                             <option value="3" > Tennant</option>

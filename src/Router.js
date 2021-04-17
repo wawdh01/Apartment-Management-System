@@ -8,6 +8,8 @@ import Notice from './Components/Layouts/Notice/Notice';
 import Parcel from './Components/Layouts/Parcel/Parcel';
 import Register from './Components/Auth/Register';
 import axios from 'axios';
+import Discussion from './Components/Layouts/Discussion/Discussion';
+import DiscussionSingle from './Components/Layouts/Discussion/DiscussionSingle';
 
 function Router() {
 
@@ -58,6 +60,12 @@ function Router() {
                             </Route>
                             <Route exact  path="/parcel">
                                 <Parcel></Parcel>
+                            </Route>
+                            <Route exact path="/discussion">
+                                <Discussion></Discussion>
+                            </Route>
+                            <Route path="/discussion/:id">
+                                <DiscussionSingle></DiscussionSingle>
                             </Route>
                         </>
                     )

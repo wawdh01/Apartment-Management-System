@@ -32,7 +32,7 @@ function NoticeList({notices}) {
             return(
                 <Card border="dark" style={{padding: "20px", margin: "15px", borderRadius: "10px", borderWidth: "2px", boxShadow: "2px 2px yellow"}}>
                     <Card.Header><Card.Title>{notice.title}</Card.Title></Card.Header>
-                    <Card.Body style={{ width: '18rem', marginRight: "10px"}}>
+                    <Card.Body style={{ marginRight: "10px"}}>
                         <Card.Subtitle className="mb-2 text-muted">{notice.date}</Card.Subtitle>
                         <Card.Text>{notice.description}</Card.Text>
                         {
