@@ -3,6 +3,8 @@ const router = require('express').Router();
 const Login = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { request } = require('express');
+const auth = require('../middleware/auth');
 //mongodb+srv://gaurav:SE7375107@apartment.cxqxa.mongodb.net/dev?retryWrites=true&w=majority
 //register
 router.post("/", async (req, res)=> {
@@ -113,5 +115,21 @@ router.get("/loggedIn", (req, res)=> {
     }
 });
 
+router.get('/logintype', auth, async (req, res)=>{
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({errorMessage:"Unauthorized"});
+        }
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        const _id = verified.user;
+        const existingUser = await Login.findOne({_id});
+        res.send(existingUser);
+    }
+    catch(e) {
+        console.log(e);
+        res.status(500).send();
+    }
+})
 
 module.exports = router;

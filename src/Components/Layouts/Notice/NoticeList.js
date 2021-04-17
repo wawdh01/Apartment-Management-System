@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Card, Spinner, Button} from 'react-bootstrap';
 import axios from 'axios';
 
 
 function NoticeList({notices}) {
+    const [loginType, setLoginType] = useState(null);
     async function deleteNotice(id) {
         try {
             console.log(id);
@@ -16,6 +17,15 @@ function NoticeList({notices}) {
         }
     }
 
+    async function getUser() {
+        const user = await axios.get('http://localhost:5000/auth/logintype');
+        setLoginType(user.data.login_type);
+    }
+
+    useEffect(()=>{
+        getUser();
+    }, []);
+
 
     function renderNotices() {
         return notices.map((notice)=> {
@@ -25,7 +35,11 @@ function NoticeList({notices}) {
                     <Card.Body style={{ width: '18rem', marginRight: "10px"}}>
                         <Card.Subtitle className="mb-2 text-muted">{notice.date}</Card.Subtitle>
                         <Card.Text>{notice.description}</Card.Text>
-                        <Button variant="danger" onClick={()=>deleteNotice(notice._id)}>Delete this Notice</Button>
+                        {
+                            loginType === 1 ?
+                                <Button variant="danger" onClick={()=>deleteNotice(notice._id)}>Delete this Notice</Button>:
+                                <></>
+                        }
                     </Card.Body>
                 </Card>
             );

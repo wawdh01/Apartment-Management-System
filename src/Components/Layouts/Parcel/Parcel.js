@@ -5,6 +5,7 @@ const axios = require('axios');
 
 function Parcel () {
     const [parcels, setParcels] = useState([]);
+    const [loginType, setLoginType] = useState(null);
 
     async function getParcels() {
         const parcelRes = await axios.get('http://localhost:5000/parcel/');
@@ -12,13 +13,21 @@ function Parcel () {
         console.log(parcels);
     }
 
+    async function getUser() {
+        const user = await axios.get('http://localhost:5000/auth/logintype');
+        setLoginType(user.data.login_type);
+    }
+
     useEffect(()=>{
         getParcels();
+        getUser();
     }, []);
 
     return(
         <div>
-            <ParcelAdd></ParcelAdd>
+            { loginType === 1 ?
+                <ParcelAdd></ParcelAdd>: <></>
+            }
             <ParcelList parcels={parcels}></ParcelList>
         </div>
     );

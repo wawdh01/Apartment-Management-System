@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect , useState} from 'react';
 import {Card, Spinner, Button} from 'react-bootstrap';
 import axios from 'axios';
 import parcelPic from './parcel.jpg';
 function ParcelList({parcels}) {
+    const [loginType, setLoginType] = useState(null);
+
     async function deleteParcel(id) {
         try {
             console.log(id);
@@ -15,6 +17,15 @@ function ParcelList({parcels}) {
         }
     }
 
+    async function getUser() {
+        const user = await axios.get('http://localhost:5000/auth/logintype');
+        setLoginType(user.data.login_type);
+    }
+
+    useEffect(()=>{
+        getUser();
+    }, []);
+
 
     function renderParcels() {
         return parcels.map((parcel)=> {
@@ -25,7 +36,11 @@ function ParcelList({parcels}) {
                     <Card.Body style={{ width: '18rem', marginRight: "10px"}}>
                         <Card.Subtitle className="mb-2 text-muted">{parcel.email}</Card.Subtitle>
                         <Card.Text>{parcel.name}</Card.Text>
-                        <Button variant="danger" onClick={()=>deleteParcel(parcel._id)}>Delete this Parcel</Button>
+                        {
+                            loginType === 1 ?
+                                <Button variant="danger" onClick={()=>deleteParcel(parcel._id)}>Delete this Parcel</Button>:
+                                <></>
+                        }
                     </Card.Body>
                 </Card>
             );
@@ -33,7 +48,7 @@ function ParcelList({parcels}) {
     }
 
     return(
-        <div style={{marginTop: "100px", margin: "20px", padding: "20px", display: "flex", flexWrap: "wrap", flexBasis: "content"}}>
+        <div style={{marginTop: "150px", margin: "20px", padding: "20px", display: "flex", flexWrap: "wrap", flexBasis: "content"}}>
             
             {
                 renderParcels()
