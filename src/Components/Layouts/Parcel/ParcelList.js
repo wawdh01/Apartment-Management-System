@@ -1,5 +1,5 @@
 import React, { useEffect , useState} from 'react';
-import {Card, Spinner, Button} from 'react-bootstrap';
+import {Card, Button} from 'react-bootstrap';
 import axios from 'axios';
 import parcelPic from './parcel.jpg';
 function ParcelList({parcels}) {

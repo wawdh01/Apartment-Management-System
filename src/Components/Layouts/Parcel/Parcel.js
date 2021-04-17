@@ -10,7 +10,7 @@ function Parcel () {
     async function getParcels() {
         const parcelRes = await axios.get('http://localhost:5000/parcel/');
         setParcels(parcelRes.data);
-        console.log(parcels);
+        //console.log(parcels);
     }
 
     async function getUser() {
