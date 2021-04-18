@@ -43,4 +43,23 @@ router.get('/', auth, async(req, res)=>{
     }
 })
 
+
+router.post('/delete', auth, async(req, res)=>{
+    try{
+        const {email, flatNumber} = req.body;
+        if (!email || !flatNumber) {
+            return res.status(400).json({errorMessage: "Please enter all Required fields."});
+        }
+        const isDeleted = await Flats.deleteOne({flat: flatNumber});
+        if (isDeleted.n == 0) {
+            return res.status(400).json({errorMessage: "The Notice can not be deleted."});
+        }
+        res.status(200).send();
+    }
+    catch(e) {
+        console.error(err);
+        res.status(500).send();
+    }
+})
+
 module.exports = router;

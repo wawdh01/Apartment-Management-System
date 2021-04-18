@@ -20,6 +20,16 @@ function Flats () {
         alert("Flat has been Added..\nPlease Refresh.. !");
     }
 
+    async function deleteFlat(e) {
+        e.preventDefault();
+        const flatData = {
+            email,
+            flatNumber
+        };
+        await axios.post('http://localhost:5000/flats/delete', flatData);
+        alert("Flat has been Delted..\nPlease Refresh.. !");
+    }
+
 
     async function getUser() {
         const user = await axios.get('http://localhost:5000/auth/logintype');
@@ -34,7 +44,7 @@ function Flats () {
                 <Row>
                     <Col>
                     { loginType === 1 ?
-                    <Form onSubmit={addFlat}>
+                    <Form>
                     <fieldset>
                     <legend>Flats and Owners data</legend>
                     <Form.Group controlId="formBasicEmail">
@@ -46,11 +56,12 @@ function Flats () {
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Old Password</Form.Label>
+                        <Form.Label>Flat Number</Form.Label>
                         <Form.Control type="text" placeholder="Enter Flat Number" onChange={(e)=>setFlatNumber(e.target.value)} value={flatNumber} />
                     </Form.Group>
-
-                    <Button variant="primary" type="submit" style={{marginTop: "50px"}}>Add Owner to Flat</Button>
+                    
+                    <Button variant="primary" type="submit" onClick={addFlat} >Add Owner to Flat</Button>
+                    <Button variant="danger" type="submit" onClick={deleteFlat} style={{marginLeft: "200px"}} >Delete a Flat Owner</Button>
                     </fieldset>
                     </Form> : <></>
                     }
