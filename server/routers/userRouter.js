@@ -2,7 +2,6 @@ const router = require('express').Router();
 
 const Login = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const { request } = require('express');
 const auth = require('../middleware/auth');
 const nodemailer = require('nodemailer');
 //mongodb+srv://gaurav:SE7375107@apartment.cxqxa.mongodb.net/dev?retryWrites=true&w=majority
@@ -200,7 +199,7 @@ router.post('/forgotpassword', async(req, res)=>{
             subject: 'Forgot Password Recovery',
             text: 'Dear User, \n Your password is "' + password + '". Please, Reset your password.\n\n\n\nThank You,\nApartment Management System'
           };
-          console.log("Comes Here....");
+          //console.log("Comes Here....");
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
               console.log(error);

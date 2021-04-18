@@ -41,9 +41,10 @@ function NavbarCustom() {
                             <Nav.Link href="/notice">Notice</Nav.Link>
                             <Nav.Link eventKey={2} href="/parcel">Parcel</Nav.Link>
                             <Nav.Link eventKey={3} href="/discussion">Discussion</Nav.Link>
+                            <Nav.Link eventKey={4} href="/flats">Flats</Nav.Link>
                             {
                                 loginType === 1 ?
-                                <Nav.Link eventKey={4} href="/register">Register</Nav.Link>:
+                                <Nav.Link eventKey={5} href="/register">Register</Nav.Link>:
                                 <></>
                             }
                             <LogOutBtn></LogOutBtn>

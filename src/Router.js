@@ -10,6 +10,7 @@ import Register from './Components/Auth/Register';
 import axios from 'axios';
 import Discussion from './Components/Layouts/Discussion/Discussion';
 import DiscussionSingle from './Components/Layouts/Discussion/DiscussionSingle';
+import Flats from './Components/Layouts/Flats/Flats';
 
 function Router() {
 
@@ -66,6 +67,9 @@ function Router() {
                             </Route>
                             <Route path="/discussion/:id">
                                 <DiscussionSingle></DiscussionSingle>
+                            </Route>
+                            <Route path="/flats">
+                                <Flats></Flats>
                             </Route>
                         </>
                     )
