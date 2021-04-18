@@ -3,7 +3,7 @@ import NoticeAdd from './NoticeAdd';
 import NoticeList from './NoticeList';
 const axios = require('axios');
 
-function Notice () {
+function Notice (props) {
     const [notices, setNotices] = useState([]);
     const [loginType, setLoginType] = useState(null);
 
@@ -18,6 +18,20 @@ function Notice () {
         setLoginType(user.data.login_type);
     }
 
+    function newNotice(notice) {
+        setNotices((prevNotes) => {
+            return [...prevNotes, notice];
+          });
+    }
+
+    function oldNotice(id) {
+        setNotices(prevNotes => {
+            return prevNotes.filter((noteItem, index) => {
+              return index !== id;
+            });
+          });
+    }
+
 
     useEffect(()=>{
         getNotices();
@@ -27,9 +41,9 @@ function Notice () {
     return(
         <div>
             { loginType === 1 ?
-                <NoticeAdd></NoticeAdd> : <></>
+                <NoticeAdd addNewNotice={newNotice}></NoticeAdd> : <></>
             }
-            <NoticeList notices={notices}></NoticeList>
+            <NoticeList notices={notices} onDelete={oldNotice}></NoticeList>
         </div>
     );
 }

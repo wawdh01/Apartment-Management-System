@@ -3,18 +3,28 @@ import {Card, Button} from 'react-bootstrap';
 import axios from 'axios';
 
 
-function NoticeList({notices}) {
+function NoticeList(props) {
+    const notices = props.notices;
     const [loginType, setLoginType] = useState(null);
-    async function deleteNotice(id) {
+    async function deleteNotice(e, id) {
+        e.preventDefault();
         try {
             console.log(id);
             const deleteNoticeData = {id};
             await axios.post("http://localhost:5000/notice/delete", deleteNoticeData);
+            props.deleteNotice(id);
             alert("Notice Deleted Succesfully...\nPlease Refresh !")
         }
         catch(e) {
             console.log(e);
         }
+    }
+
+    function handleClick() {
+        const id = props.id;
+        props.onDelete(props.id);
+        const deleteNoticeData = {id};
+        axios.post("http://localhost:5000/notice/delete", deleteNoticeData);
     }
 
     async function getUser() {
@@ -37,7 +47,7 @@ function NoticeList({notices}) {
                         <Card.Text>{notice.description}</Card.Text>
                         {
                             loginType === 1 ?
-                                <Button variant="danger" onClick={()=>deleteNotice(notice._id)}>Delete this Notice</Button>:
+                                <Button variant="danger" onClick={handleClick}>Delete this Notice</Button>:
                                 <></>
                         }
                     </Card.Body>

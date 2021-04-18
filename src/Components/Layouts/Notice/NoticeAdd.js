@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
-function NoticeAdd() {
+function NoticeAdd(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -12,14 +12,16 @@ function NoticeAdd() {
                 title,
                 description
             };
+            props.addNewNotice(noticeData);
             await axios.post("http://localhost:5000/notice/add", noticeData);
-            alert("Noitce Added Succesfully...\nPlease Refresh !");
+            alert("Noitce Added Succesfully...");
+            setTitle("");
+            setDescription("");
         }
         catch(err) {
             console.log(err);
         }
     }
-
 
     return(
         <div style={{marginTop: "100px"}}>

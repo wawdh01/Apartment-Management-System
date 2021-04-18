@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
 const Login = require('../models/userModel');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { request } = require('express');
 const auth = require('../middleware/auth');
+const nodemailer = require('nodemailer');
 //mongodb+srv://gaurav:SE7375107@apartment.cxqxa.mongodb.net/dev?retryWrites=true&w=majority
 //register
 router.post("/", async (req, res)=> {
@@ -23,11 +23,7 @@ router.post("/", async (req, res)=> {
         if (existingUser) {
             return res.status(400).json({errorMessage: "This Email already exists."});
         }
-
-        //hasing the password
-        const salt = await bcrypt.genSalt();
-        const hashPassword = await bcrypt.hash(password, salt);
-
+        const hashPassword = password;
         //add a new user
         const newUser = new Login({
             email, name, mbNum, hashPassword, login_type
@@ -67,7 +63,7 @@ router.post("/login", async (req, res) => {
         if (!existingUser) {
             return res.status(401).json({errorMessage: "Email or Password is Wrong."});
         }
-        const passwordCorrect = await bcrypt.compare(password, existingUser.hashPassword);
+        const passwordCorrect = (password === existingUser.hashPassword) ? true:false;
         if (!passwordCorrect) {
             return res.status(401).json({errorMessage: "Email or Password is Wrong."});
         }
@@ -125,6 +121,93 @@ router.get('/logintype', auth, async (req, res)=>{
         const _id = verified.user;
         const existingUser = await Login.findOne({_id});
         res.send(existingUser);
+    }
+    catch(e) {
+        console.log(e);
+        res.status(500).send();
+    }
+})
+
+
+router.post('/resetpassword', async (req, res)=>{
+    try {
+        const {resetemail,oldPassword,newPassword} = req.body;
+        if (!resetemail || !oldPassword || !newPassword) {
+            return res.status(400).json({errorMessage: "Please enter all Required fields."});
+        }
+        const existingUser = await Login.findOne({email: resetemail});
+        console.log(existingUser);
+        if (!existingUser) {
+            return res.status(401).json({errorMessage: "Email or Old password is wrong."});
+        }
+        const passwordCorrect = (oldPassword === existingUser.hashPassword) ? true: false;
+        if (!passwordCorrect) {
+            return res.status(401).json({errorMessage: "Email or Old Password is Wrong."});
+        }
+        const id = existingUser._id;
+        const user = await Login.findByIdAndUpdate(
+            {_id: id},
+            {
+                hashPassword: newPassword
+            },
+            function (err, result){
+                if (err) {
+                    res.send(err);
+                }
+                else {
+                    res.send(result);
+                }
+            }
+        );
+        console.log(user);
+    }
+    catch(e) {
+        console.log(e);
+        res.status(500).send();
+    }
+})
+
+
+router.post('/forgotpassword', async(req, res)=>{
+    try{
+        const {forgotemail, forgotmobile} = req.body;
+        if (!forgotemail || !forgotmobile) {
+            return res.status(400).json({errorMessage: "Please enter all Required fields."});
+        }
+        const existingUser = await Login.findOne({email: forgotemail});
+        if (!existingUser) {
+            return res.status(401).json({errorMessage: "Email or Phone Number is wrong."});
+        }
+        const mbChecker = (parseInt(forgotmobile) === existingUser.mbNum) ? true:false;
+        if (!mbChecker){
+            return res.status(401).json({errorMessage: "Email or Phone Number is wrong."});
+        }
+        const password = existingUser.hashPassword;
+        //console.log(password);
+
+        //Code to send a mail is from here
+        console.log(password);
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD
+            }
+          });
+          var mailOptions = {
+            from: 'apartmentsystem130@gmail.com',
+            to: existingUser.email,
+            subject: 'Forgot Password Recovery',
+            text: 'Dear User, \n Your password is "' + password + '". Please, Reset your password.\n\n\n\nThank You,\nApartment Management System'
+          };
+          console.log("Comes Here....");
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
     }
     catch(e) {
         console.log(e);
