@@ -34,3 +34,4 @@ app.use("/notice", require('./routers/noticeRouter'));
 app.use("/parcel", require('./routers/parcelRouter'));
 app.use("/discussion", require('./routers/discussionRouter'));
 app.use("/flats", require("./routers/flatRouter"));
+app.use("/maintenance", require("./routers/maintenanceRouter"));
