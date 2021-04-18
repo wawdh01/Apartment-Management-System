@@ -23,7 +23,7 @@ function NoticeAdd(props) {
         }
     }
 
-    return(
+    return( 
         <div style={{marginTop: "100px"}}>
         <Container fluid="md" className="mt-5">
             <Row>

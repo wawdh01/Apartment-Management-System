@@ -18,6 +18,12 @@ function Parcel () {
         setLoginType(user.data.login_type);
     }
 
+    function newParcel(parcel) {
+        setParcels((prevNotes) => {
+            return [...prevNotes, parcel];
+          });
+    }
+
     useEffect(()=>{
         getParcels();
         getUser();
@@ -26,7 +32,7 @@ function Parcel () {
     return(
         <div>
             { loginType === 1 ?
-                <ParcelAdd></ParcelAdd>: <></>
+                <ParcelAdd addNewParcel={newParcel}></ParcelAdd>: <></>
             }
             <ParcelList parcels={parcels}></ParcelList>
         </div>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
-function ParcelAdd() {
+function ParcelAdd(props) {
     const [parcel_id, setParcel_id] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -14,6 +14,7 @@ function ParcelAdd() {
                 name,
                 email
             };
+            props.addNewParcel(parcelData);
             await axios.post("http://localhost:5000/parcel/add", parcelData);
             alert("Parcel Added Succesfully...\nPlease Refresh !");
         }

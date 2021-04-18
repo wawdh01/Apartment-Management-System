@@ -24,15 +24,6 @@ function Notice (props) {
           });
     }
 
-    function oldNotice(id) {
-        setNotices(prevNotes => {
-            return prevNotes.filter((noteItem, index) => {
-              return index !== id;
-            });
-          });
-    }
-
-
     useEffect(()=>{
         getNotices();
         getUser();
@@ -43,7 +34,7 @@ function Notice (props) {
             { loginType === 1 ?
                 <NoticeAdd addNewNotice={newNotice}></NoticeAdd> : <></>
             }
-            <NoticeList notices={notices} onDelete={oldNotice}></NoticeList>
+            <NoticeList notices={notices}></NoticeList>
         </div>
     );
 }
