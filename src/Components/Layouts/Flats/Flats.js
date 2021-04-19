@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState , useEffect} from 'react';
 import { Container , Row, Col, Form, Button} from 'react-bootstrap';
 import FlatList from './FlatsList';
+import {HashLoader} from 'react-spinners';
 
 
 function Flats () {
@@ -11,6 +12,8 @@ function Flats () {
     const [loginType, setLoginType] = useState(null);
     const [adderrMessage, setAdderrMessage] = useState("");
     const [deleterrMessage, setdeleterrMessage] = useState("");
+
+    const [isLoading , setIsLoading] = useState(false);
 
     async function addFlat(e) {
         e.preventDefault();
@@ -46,12 +49,16 @@ function Flats () {
 
 
     async function getUser() {
+        setIsLoading(true);
         const user = await axios.get('http://localhost:5000/auth/logintype');
+        setIsLoading(false);
         setLoginType(user.data.login_type);
     }
     useEffect(()=>{
         getUser();
     }, []);
+
+    if (isLoading === false)
     return(
         <div style={{marginTop: "100px"}}>
             <Container>
@@ -94,6 +101,18 @@ function Flats () {
             </Container>
         </div>
     );
+    else {
+        return(
+            <div>
+                <div style={{marginTop: "100px", textAlign:"center"}}>
+                    <h1>Apartment Management System</h1>
+                </div>
+                <div style={{marginTop: "15%", marginLeft:"5%", textAlign:"center"}}>
+                    <HashLoader loading size="70"/>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Flats;

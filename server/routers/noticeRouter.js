@@ -48,7 +48,7 @@ router.post('/delete', auth, async(req, res)=>{
         if (isDeleted.n == 0) {
             return res.status(400).json({errorMessage: "The Notice can not be deleted."});
         }
-        return res.status(200);
+        return res.json(req.body);
     }
     catch (e) {
         console.error(err);

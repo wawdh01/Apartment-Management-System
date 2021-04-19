@@ -3,6 +3,7 @@ import axios from 'axios';
 import AuthContext from '../../Context/AuthContext';
 import { useHistory } from 'react-router';
 import {Form, Container, Col, Row, Button} from 'react-bootstrap';
+import {HashLoader} from 'react-spinners';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -10,6 +11,8 @@ function Login() {
     const [resetemail, setResetemail] = useState("");
     const [oldPassword, setOldpassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [forgotemail, setForgotemail] = useState("");
     const [forgotmobile, setForgotmobile] = useState("");
@@ -26,15 +29,18 @@ function Login() {
     async function forogotlogin(e) {
         e.preventDefault();
         setForgoterrMessage("");
+        setIsLoading(true);
         try {
             const forgotData = {
                 forgotemail,
                 forgotmobile
             }
             await axios.post('http://localhost:5000/auth/forgotpassword', forgotData);
+            setIsLoading(false);
             alert('Mail has been Sent..\nPlease Check your mailbox.. !')
         }
         catch(err) {
+            setIsLoading(false);
             setForgoterrMessage(err.response.data.errorMessage);
         }
     }
@@ -42,6 +48,7 @@ function Login() {
     async function resetlogin(e) {
         e.preventDefault();
         setReseterrMessage("");
+        setIsLoading(true);
         try {
             const resetData = {
                 resetemail,
@@ -49,9 +56,11 @@ function Login() {
                 newPassword
             };
             await axios.post('http://localhost:5000/auth/resetpassword', resetData);
+            setIsLoading(false);
             alert('Your Password has been Resetted...\nPlease Login.. !')
         }
         catch(err) {
+            setIsLoading(false);
             setReseterrMessage(err.response.data.errorMessage);
         }
     }
@@ -59,6 +68,7 @@ function Login() {
     async function login(e) {
         e.preventDefault();
         setLoginerrMessage("");
+        setIsLoading(true);
         try {
             const loginData = {
                 email,
@@ -66,14 +76,16 @@ function Login() {
             };
             await axios.post("http://localhost:5000/auth/login", loginData);
             await getLoggedIn();
+            setIsLoading(false);
             history.push("/notice");
         }
         catch(err) {
+            setIsLoading(false);
             setLoginerrMessage(err.response.data.errorMessage);
         }
     }
 
-
+    if (isLoading === false)
     return(
         <div style={{marginTop: "100px"}}>
         <Container fluid="md" className="mt-5">
@@ -188,6 +200,18 @@ function Login() {
         </Container>
         </div>
     );
+    else {
+        return(
+            <div>
+                <div style={{marginTop: "100px", textAlign:"center"}}>
+                    <h1>Apartment Management System</h1>
+                </div>
+                <div style={{marginTop: "15%", marginLeft:"5%", textAlign:"center"}}>
+                    <HashLoader loading size="70"/>
+                </div>
+            </div>
+        );
+    }
 }
 
 

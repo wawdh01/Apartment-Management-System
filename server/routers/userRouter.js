@@ -31,15 +31,15 @@ router.post("/", async (req, res)=> {
         const savedUser = await newUser.save();
 
 
-        //log the user in
-        const token = jwt.sign({
+        //This code is used to sign the other user
+        /*const token = jwt.sign({
             user: savedUser._id,
         }, process.env.JWT_SECRET);
         //console.log(token);
         //send a token in HTTP-cookie only
         res.cookie("token", token, {
             httpOnly: true,
-        }).send();
+        }).send();*/
     }
     catch(err) {
         console.error(err);
@@ -207,6 +207,7 @@ router.post('/forgotpassword', async(req, res)=>{
               console.log('Email sent: ' + info.response);
             }
           });
+          return res.status(401).json({errorMessage: "Mail has been sent to your registered Mail Id. (If not in Inbox check spam folder)"});
     }
     catch(e) {
         console.log(e);

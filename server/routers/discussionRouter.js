@@ -92,6 +92,7 @@ router.post('/delete', auth, async(req, res)=>{
         if (isDeleted.n == 0) {
             return res.status(400).json({errorMessage: "The Discussion can not be deleted."});
         }
+        return res.json(req.body);
         //return res.status(200);
     }
     catch (e) {

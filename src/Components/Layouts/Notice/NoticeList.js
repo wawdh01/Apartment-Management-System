@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {Card, Button} from 'react-bootstrap';
 import axios from 'axios';
 
+import {HashLoader} from 'react-spinners';
 
 function NoticeList({notices}) {
     const [loginType, setLoginType] = useState(null);
@@ -46,7 +47,6 @@ function NoticeList({notices}) {
             );
         })
     }
-
     return(
         <div style={{marginTop: "100px", marginRight: "20px", padding: "20px"}}>
             <ul style={{padding: "10px", boxShadow: "2px 2px solid black"}}>

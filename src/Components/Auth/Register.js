@@ -3,6 +3,7 @@ import axios from 'axios';
 //import AuthContext from '../../Context/AuthContext';
 //import { useHistory } from 'react-router';
 import {Form, Container, Col, Row, Button} from 'react-bootstrap';
+import {HashLoader} from 'react-spinners';
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -12,10 +13,12 @@ function Register() {
     const [passwordVerify, setPasswordVerify] = useState("");
     const [login_typeStr, setLogin_typeStr] = useState("");
     const [errMessage, setErrMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    async function login(e) {
+    async function register(e) {
         e.preventDefault();
         setErrMessage("");
+        setIsLoading(true);
         try {
             const mbNum = parseInt(mbNumStr);
             const login_type = parseInt(login_typeStr);
@@ -28,6 +31,7 @@ function Register() {
                 login_type
             };
             await axios.post("http://localhost:5000/auth/", registerData);
+            setIsLoading(false);
             alert("User Succesfully Registerd...\nThank You !");
         }
         catch(err) {
@@ -35,13 +39,13 @@ function Register() {
         }
     }
 
-
+    if (isLoading === false)
     return(
         <div style={{marginTop: "100px"}}>
         <Container fluid="md" className="mt-5">
             <Row>
                 <Col>
-                    <Form onSubmit={login}>
+                    <Form onSubmit={register}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" onChange={(e)=>setEmail(e.target.value)} value={email}/>
@@ -87,6 +91,18 @@ function Register() {
         </Container>
         </div>
     );
+    else {
+        return(
+            <div>
+                <div style={{marginTop: "100px", textAlign:"center"}}>
+                    <h1>Apartment Management System</h1>
+                </div>
+                <div style={{marginTop: "15%", marginLeft:"5%", textAlign:"center"}}>
+                    <HashLoader loading size="70"/>
+                </div>
+            </div>
+        );
+    }
 }
 
 
