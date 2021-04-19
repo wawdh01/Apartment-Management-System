@@ -16,11 +16,16 @@ function Login() {
 
     const {getLoggedIn} = useContext(AuthContext);
 
+    const [loginerrMessage, setLoginerrMessage] = useState("");
+    const [forgoterrMessage, setForgoterrMessage] = useState("");
+    const [reseterrMessage, setReseterrMessage] = useState("");
+
     const history = useHistory();
 
 
     async function forogotlogin(e) {
         e.preventDefault();
+        setForgoterrMessage("");
         try {
             const forgotData = {
                 forgotemail,
@@ -30,12 +35,13 @@ function Login() {
             alert('Mail has been Sent..\nPlease Check your mailbox.. !')
         }
         catch(err) {
-            console.log(err);
+            setForgoterrMessage(err.response.data.errorMessage);
         }
     }
 
     async function resetlogin(e) {
         e.preventDefault();
+        setReseterrMessage("");
         try {
             const resetData = {
                 resetemail,
@@ -46,12 +52,13 @@ function Login() {
             alert('Your Password has been Resetted...\nPlease Login.. !')
         }
         catch(err) {
-            console.log(err);
+            setReseterrMessage(err.response.data.errorMessage);
         }
     }
 
     async function login(e) {
         e.preventDefault();
+        setLoginerrMessage("");
         try {
             const loginData = {
                 email,
@@ -62,7 +69,7 @@ function Login() {
             history.push("/notice");
         }
         catch(err) {
-            console.log(err);
+            setLoginerrMessage(err.response.data.errorMessage);
         }
     }
 
@@ -80,12 +87,12 @@ function Login() {
                         We'll never share your email with anyone else.
                         </Form.Text>
                     </Form.Group>
-
+                    
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} value={password} />
                     </Form.Group>
-
+                    <p style={{color:'red'}}>{loginerrMessage}</p>
                     <Button variant="primary" type="submit">Submit</Button>
                     </Form>
                 </Col>
@@ -139,7 +146,7 @@ function Login() {
                         <Form.Label>New Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" onChange={(e)=>setNewPassword(e.target.value)} value={newPassword} />
                     </Form.Group>
-
+                    <p style={{color:'red'}}>{reseterrMessage}</p>
                     <Button variant="primary" type="submit">Reset Password</Button>
                     </fieldset>
                     </Form>
@@ -167,7 +174,7 @@ function Login() {
                         <Form.Label>Mobile Number</Form.Label>
                         <Form.Control type="number" placeholder="Mobile Number" onChange={(e)=>setForgotmobile(e.target.value)} value={forgotmobile} />
                     </Form.Group>
-
+                    <p style={{color:'red'}}>{forgoterrMessage}</p>
                     <Button variant="danger" type="submit">Forgot Password</Button>
                     </fieldset>
                     </Form>

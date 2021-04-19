@@ -6,9 +6,11 @@ function DiscussionAdd() {
     const [email, setEmail] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [discussionAddErr, setDiscussionAddErr] = useState("");
 
     async function discussionadd(e) {
         e.preventDefault();
+        setDiscussionAddErr("");
         try {
             const discussionData = {
                 email,
@@ -20,7 +22,7 @@ function DiscussionAdd() {
             alert("Discussion Added Succesfully...\nPlease Refresh !");
         }
         catch(err) {
-            console.log(err);
+            setDiscussionAddErr(err.response.data.errorMessage);
         }
     }
 
@@ -56,7 +58,7 @@ function DiscussionAdd() {
                         Description of the Discussion
                         </Form.Text>
                     </Form.Group>
-
+                    <p style={{color: 'red'}}>{discussionAddErr}</p>
                     <Button variant="primary" type="submit">Submit</Button>
                     </Form>
                 </Col>

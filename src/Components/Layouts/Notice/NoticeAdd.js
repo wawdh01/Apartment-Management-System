@@ -4,22 +4,24 @@ import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 function NoticeAdd(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [noticeErrMessage, setNoticeErrMessage] = useState("");
 
     async function noticeadd(e) {
         e.preventDefault();
+        setNoticeErrMessage("");
         try {
             const noticeData = {
                 title,
                 description
             };
-            props.addNewNotice(noticeData);
             await axios.post("http://localhost:5000/notice/add", noticeData);
+            props.addNewNotice(noticeData);
             alert("Noitce Added Succesfully...");
             setTitle("");
             setDescription("");
         }
         catch(err) {
-            console.log(err);
+            setNoticeErrMessage(err.response.data.errorMessage);
         }
     }
 
@@ -44,7 +46,7 @@ function NoticeAdd(props) {
                         Description of the Notice
                         </Form.Text>
                     </Form.Group>
-
+                    <p style={{color: 'red'}}>{noticeErrMessage}</p>
                     <Button variant="primary" type="submit">Submit</Button>
                     </Form>
                 </Col>

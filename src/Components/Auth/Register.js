@@ -11,9 +11,11 @@ function Register() {
     const [password, setPassword] = useState("");
     const [passwordVerify, setPasswordVerify] = useState("");
     const [login_typeStr, setLogin_typeStr] = useState("");
+    const [errMessage, setErrMessage] = useState("");
 
     async function login(e) {
         e.preventDefault();
+        setErrMessage("");
         try {
             const mbNum = parseInt(mbNumStr);
             const login_type = parseInt(login_typeStr);
@@ -29,7 +31,7 @@ function Register() {
             alert("User Succesfully Registerd...\nThank You !");
         }
         catch(err) {
-            console.log(err);
+            setErrMessage(err.response.data.errorMessage);
         }
     }
 
@@ -77,6 +79,7 @@ function Register() {
                             <option value="3" > Tennant</option>
                         </select>
                     </Form.Group>
+                    <p style={{color: 'red'}}>{errMessage}</p>
                     <Button variant="primary" type="submit">Submit</Button>
                     </Form>
                 </Col>

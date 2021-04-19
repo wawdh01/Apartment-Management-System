@@ -3,9 +3,9 @@ import {Card, Button} from 'react-bootstrap';
 import axios from 'axios';
 
 
-function NoticeList(props) {
-    const notices = props.notices;
+function NoticeList({notices}) {
     const [loginType, setLoginType] = useState(null);
+
     async function deleteNotice(id) {
         try {
             console.log(id);
@@ -38,7 +38,7 @@ function NoticeList(props) {
                         <Card.Text>{notice.description}</Card.Text>
                         {
                             loginType === 1 ?
-                                <Button variant="danger" onClick={deleteNotice(notice._id)}>Delete this Notice</Button>:
+                                <Button variant="danger" onClick={()=>deleteNotice(notice._id)}>Delete this Notice</Button>:
                                 <></>
                         }
                     </Card.Body>

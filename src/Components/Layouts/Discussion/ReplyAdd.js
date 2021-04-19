@@ -6,6 +6,7 @@ import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 function Replyadd({id}) {
     const [replyText, setReplyText] = useState("");
     const [name, setName] = useState("");
+    const [replyAddErr, setReplyAddErr] = useState("");
 
     async function getUser() {
         const user = await axios.get('http://localhost:5000/auth/logintype');
@@ -19,6 +20,7 @@ function Replyadd({id}) {
 
     async function replyadd(e) {
         e.preventDefault();
+        setReplyAddErr("");
         try {
             const replyData = {
                 id,
@@ -28,7 +30,7 @@ function Replyadd({id}) {
             await axios.post("http://localhost:5000/discussion/addreply", replyData);
         }
         catch(err) {
-            console.log(err);
+            setReplyAddErr(err.response.data.errorMessage);
         }
     }
     return(
@@ -44,6 +46,7 @@ function Replyadd({id}) {
                             You can Discuss Here....
                             </Form.Text>
                         </Form.Group>
+                        <p style={{color: 'red'}}>{replyAddErr}</p>
                         <Button variant="primary" type="submit">Reply to this Discussion</Button>
                         </Form>
                     </Col>

@@ -5,21 +5,23 @@ function ParcelAdd(props) {
     const [parcel_id, setParcel_id] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [parcelErrMessage, setParcelErrMessage] = useState("");
 
     async function parceladd(e) {
         e.preventDefault();
+        setParcelErrMessage("");
         try {
             const parcelData = {
                 parcel_id,
                 name,
                 email
             };
-            props.addNewParcel(parcelData);
             await axios.post("http://localhost:5000/parcel/add", parcelData);
+            props.addNewParcel(parcelData);
             alert("Parcel Added Succesfully...\nPlease Refresh !");
         }
         catch(err) {
-            console.log(err);
+            setParcelErrMessage(err.response.data.errorMessage);
         }
     }
 
@@ -54,7 +56,7 @@ function ParcelAdd(props) {
                         Email of the receiver
                         </Form.Text>
                     </Form.Group>
-
+                    <p style={{color:'red'}}>{parcelErrMessage}</p>
                     <Button variant="primary" type="submit">Submit</Button>
                     </Form>
                 </Col>

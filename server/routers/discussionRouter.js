@@ -63,6 +63,9 @@ router.post('/addreply', auth, async(req, res)=>{
         if (!id || !name || !replyText) {
             return res.status(400).json({errorMessage: "Please enter all Required fields."});
         }
+        if (replyText.length < 10) {
+            return res.status(400).json({errorMessage: "Please enter reply message more than 10 characters."});
+        }
         await Discussion.findByIdAndUpdate(
             {_id: id},
             {$addToSet:{reply: replyBody}},
