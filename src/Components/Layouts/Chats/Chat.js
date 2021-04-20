@@ -81,7 +81,7 @@ function ChatSub({email}) {
             <div style={chatStyles}>
               <div style={headerStyles}>Apartment's Chat Panel</div>
 
-              <div style={listStyles}>
+              <div style={listStyles} className="newImg">
 
 
                 <ScrollToBottom >
@@ -181,7 +181,7 @@ const pageStyles = {
 
   const listStyles = {
     alignItems: 'flex-start',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -191,7 +191,7 @@ const pageStyles = {
   };
 
   const messageStyles = {
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
     borderRadius: '5px',
     color: '#333',
     fontSize: '1.1rem',
