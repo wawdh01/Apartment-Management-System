@@ -96,8 +96,8 @@ function ChatSub({email}) {
                             (
                               <div className="messageContainer justifyEnd">
                                 <p className="sentText pr-10">you</p>
-                                <div className="messageBox backgroundBlue">
-                                  <p className="messageText colorWhite">{ReactEmoji.emojify(message.message)}</p>
+                                <div className="messageBox ">
+                                  <p className="messageText ">{ReactEmoji.emojify(message.message)}</p>
                                 </div>
                               </div>
                               )
