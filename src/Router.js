@@ -12,6 +12,7 @@ import Discussion from './Components/Layouts/Discussion/Discussion';
 import DiscussionSingle from './Components/Layouts/Discussion/DiscussionSingle';
 import Flats from './Components/Layouts/Flats/Flats';
 import Chat from './Components/Layouts/Chats/Chat';
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 function Router() {
 
@@ -50,7 +51,7 @@ function Router() {
                             <Route exact  path="/">
                                 <Home></Home>
                             </Route>
-                            { 
+                            {
                                 loginType === 1 ?
                                     <Route exact  path="/register">
                                         <Register></Register>
@@ -72,8 +73,10 @@ function Router() {
                             <Route path="/flats">
                                 <Flats></Flats>
                             </Route>
-                            <Route path="/chats"> 
+                            <Route path="/chats">
+                                <ScrollToBottom >
                                 <Chat></Chat>
+                                </ScrollToBottom >
                             </Route>
                         </>
                     )
