@@ -77,65 +77,62 @@ function ChatSub({email}) {
     }, [pubnub, channels]);
 
     return (
-        <div style={{margin:"100px", position:"fixed"}}>
-            <div style={chatStyles}>
-              <div style={headerStyles}>Apartment's Chat Panel</div>
 
-              <div style={listStyles} className="newImg">
+        <div className="outerContainer">
+          <div className="container">
 
+            <div className="infoBar">
+                <div className="leftInnerContainer">
 
-                <ScrollToBottom >
-                {
+                  <h3>Apartment Chat System</h3>
+                </div>
+                <div className="rightInnerContainer">
 
-                   getmessage.map((message, index) => {
-                      return(
+                </div>
+            </div>
+            <ScrollToBottom className="messages">
+                {getmessage.map((message, index) =>
 
-                        <div key={`message-${index}`} style={messageStyles}>
-                          {
-                            (message.email === email) ?
-                            (
-                              <div className="messageContainer justifyEnd">
-                                <p className="sentText pr-10">you</p>
-                                <div className="messageBox ">
-                                  <p className="messageText ">{ReactEmoji.emojify(message.message)}</p>
-                                </div>
-                              </div>
-                              )
-                              : (
-                                <div className="messageContainer justifyStart">
-                                  <div className="messageBox backgroundLight">
-                                    <p className="messageText colorDark">{ReactEmoji.emojify(message.message)}</p>
-                                  </div>
-                                  <p className="sentText pl-10 ">{message.email}</p>
-                                </div>
-                              )
-                          }
-
+                  <div>
+                    {
+                      (message.email === email) ?
+                      (
+                        <div className="messageContainer justifyEnd">
+                          <p className="sentText pr-10">you</p>
+                          <div className="messageBox ">
+                            <p className="messageText ">{ReactEmoji.emojify(message.message)}</p>
+                          </div>
                         </div>
-
-                      );
+                        )
+                        : (
+                          <div className="messageContainer justifyStart">
+                            <div className="messageBox backgroundLight">
+                              <p className="messageText colorDark">{ReactEmoji.emojify(message.message)}</p>
+                            </div>
+                            <p className="sentText pl-10 ">{message.email}</p>
+                          </div>
+                        )
                     }
 
-                  )
-                }
-                </ ScrollToBottom >
+                  </div>
 
-              </div>
 
-            <div style={footerStyles}>
+              )}
+            </ScrollToBottom>
+            <form className="form">
             <input
               type="text"
-              style={inputStyles}
+              className="input"
               placeholder="Type your message"
               value={message}
-              onKeyPress={e => {
-                if (e.key !== 'Enter') return;
-                sendMessage(message);
-              }}
+              // onKeyPress={e => {
+              //   if (e.key !== 'Enter') return;
+              //   sendMessage(message);
+              // }}
               onChange={e => setMessage(e.target.value)}
             />
             <button
-              style={buttonStyles}
+              className="sendButton"
               onClick={e => {
                 e.preventDefault();
                 sendMessage(message);
@@ -143,74 +140,10 @@ function ChatSub({email}) {
             >
               Send Message
             </button>
-          </div>
-        </div>
+        </form>
+      </div>
       </div>
   );
 }
-
-
-const pageStyles = {
-    /*alignItems: 'center',
-    //background: '#282c34',
-    display: 'flex',
-    position:'fixed',
-    width: "100%",
-    justifyContent: 'center',
-    minHeight: '100vh',*/
-    marginLeft: "20px",
-    marginRight: "20px",
-    marginTop: "100px"
-  };
-
-  const chatStyles = {
-    display: 'flex',
-    overflow:"scroll",
-    flexDirection: 'column',
-    backgroundColor: 'blue',
-    height: '70vh',
-    width: '100%',
-  };
-
-  const headerStyles = {
-    background: '#323742',
-    color: 'white',
-    fontSize: '1.4rem',
-    padding: '10px 15px',
-  };
-
-  const listStyles = {
-    alignItems: 'flex-start',
-    // backgroundColor: 'white',
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    overflow: 'auto',
-    // flex:'auto',
-    padding: '10px',
-  };
-
-  const messageStyles = {
-    // backgroundColor: 'black',
-    borderRadius: '5px',
-    color: '#333',
-    fontSize: '1.1rem',
-    margin: '5px',
-    padding: '8px 15px',
-  };
-
-  const footerStyles = {
-    display: 'flex',
-  };
-  const inputStyles = {
-    flexGrow: 1,
-    fontSize: '1.1rem',
-    padding: '10px 15px',
-  };
-
-  const buttonStyles = {
-    fontSize: '1.1rem',
-    padding: '10px 15px',
-  };
 
 export default Chat;
