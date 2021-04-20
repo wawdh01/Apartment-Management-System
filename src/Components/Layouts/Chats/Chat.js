@@ -106,7 +106,7 @@ function ChatSub({email}) {
                                   <div className="messageBox backgroundLight">
                                     <p className="messageText colorDark">{ReactEmoji.emojify(message.message)}</p>
                                   </div>
-                                  <p className="sentText pl-10 ">{email}</p>
+                                  <p className="sentText pl-10 ">{message.email}</p>
                                 </div>
                               )
                           }
