@@ -47,7 +47,7 @@ function Chat() {
     <div>
       <PubNubProvider client={pubnub}>
         <ScrollToBottom>
-        <ChatSub email={getEmail} loginType={loginType}/>
+        <ChatSub email={getEmail} loginType={loginType} onDelete={deleteChat}/>
         </ScrollToBottom>
       </PubNubProvider>
     </div>
@@ -66,7 +66,7 @@ function Chat() {
   }
 }
 
-function ChatSub({email, loginType}) {
+function ChatSub({email, loginType, onDelete}) {
     const pubnub = usePubNub();
     const [channels] = useState(['awesome-channel']);
 
@@ -131,7 +131,7 @@ function ChatSub({email, loginType}) {
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
-                      <Dropdown.Item href=""><button className="btn btn-light">Clear Chat</button></Dropdown.Item>
+                      <Dropdown.Item href=""><button className="btn btn-light" onClick={onDelete}>Clear Chat</button></Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
 
