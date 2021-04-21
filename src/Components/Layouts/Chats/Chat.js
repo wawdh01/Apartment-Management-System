@@ -6,8 +6,9 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import ReactEmoji from 'react-emoji';
 import "./Chat.css";
 //import { Button } from 'bootstrap';
-import {Button} from 'react-bootstrap';
+import {Button, Dropdown} from 'react-bootstrap';
 import {HashLoader} from 'react-spinners';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const pubnub = new PubNub({
   publishKey: 'pub-c-bb8c5518-e3d7-4e6b-933b-f8d7a6694437',
@@ -23,13 +24,16 @@ function Chat() {
     setIsLoading(true);
     const user = await axios.get('http://localhost:5000/auth/logintype');
     setGetEmail(user.data.email);
-    setLoginType(loginType);
+    setLoginType(user.data.login_type);
+    // console.log("hi this is logintype", loginType);
+    // console.log(user.data.email);
     setIsLoading(false);
   }
-  useEffect(()=>{
-      getUser();
-  }, []);
 
+  useEffect(()=>{
+   getUser();
+  }, []);
+  // console.log("hi this is logintype",loginType);
   async function deleteChat() {
     try {
       await axios.get('http://localhost:5000/chats/delete');
@@ -43,7 +47,7 @@ function Chat() {
     <div>
       <PubNubProvider client={pubnub}>
         <ScrollToBottom>
-        <ChatSub email={getEmail}/>
+        <ChatSub email={getEmail} loginType={loginType}/>
         </ScrollToBottom>
       </PubNubProvider>
     </div>
@@ -62,7 +66,7 @@ function Chat() {
   }
 }
 
-function ChatSub({email}) {
+function ChatSub({email, loginType}) {
     const pubnub = usePubNub();
     const [channels] = useState(['awesome-channel']);
 
@@ -75,7 +79,10 @@ function ChatSub({email}) {
       setGetmessage(chatData.data);
     }
 
+
     getMessage();
+
+    console.log(loginType);
 
     const handleMessage = event => {
         const message = event.message;
@@ -118,6 +125,15 @@ function ChatSub({email}) {
                   <h3>Apartment Chat System</h3>
                 </div>
                 <div className="rightInnerContainer">
+                    <Dropdown>
+                      <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Menu
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                      <Dropdown.Item href=""><button className="btn btn-light">Clear Chat</button></Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
 
                 </div>
             </div>
@@ -156,10 +172,6 @@ function ChatSub({email}) {
               className="input"
               placeholder="Type your message"
               value={message}
-              // onKeyPress={e => {
-              //   if (e.key !== 'Enter') return;
-              //   sendMessage(message);
-              // }}
               onChange={e => setMessage(e.target.value)}
             />
             <button
