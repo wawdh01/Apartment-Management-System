@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign({
             user : existingUser._id,
         }, process.env.JWT_SECRET);
-
+        console.log(token);
         //send a token in HTTP-cookie only
         res.cookie("token", token, {
             httpOnly: true,

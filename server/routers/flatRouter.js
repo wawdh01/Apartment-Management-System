@@ -35,6 +35,7 @@ router.post('/add', auth, async(req, res)=>{
 router.get('/', auth, async(req, res)=>{
     try {
         const flats = await Flats.find();
+        console.log(flats);
         res.json(flats);
     }
     catch(err) {
