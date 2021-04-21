@@ -28,40 +28,37 @@ function ParcelList({parcels}) {
 
 
     function renderParcels() {
-        return parcels.map((parcel)=> {
+        if (parcels.length === 0)
             return(
-                <Card border="dark" style={{padding: "20px", margin: "20px", borderRadius: "10px", borderWidth: "2px", boxShadow: "2px 2px blue", width: "400px"}}>
-                    <Card.Img variant="top" src={parcelPic} />
-                    <Card.Header><Card.Title>{parcel.parcel_id}</Card.Title></Card.Header>
-                    <Card.Body style={{marginRight: "10px"}}>
-                        <Card.Subtitle className="mb-2 text-muted">{parcel.email}</Card.Subtitle>
-                        <Card.Text>{parcel.name}</Card.Text>
-                        {
-                            loginType === 1 ?
-                                <Button variant="danger" onClick={()=>deleteParcel(parcel._id)}>Delete this Parcel</Button>:
-                                <></>
-                        }
-                    </Card.Body>
-                </Card>
+                <h3 style={{color:"black", marginTop:"100px",marginLeft:"40%", textAlign:"center"}}>{"There are " + parcels.length + " Parcels"}</h3>
             );
-        })
+        else
+            return parcels.map((parcel)=> {
+                return(
+                    <Card border="dark" style={{padding: "20px", margin: "20px", borderRadius: "10px", borderWidth: "2px", boxShadow: "2px 2px blue", width: "400px"}}>
+                        <Card.Img variant="top" src={parcelPic} />
+                        <Card.Header><Card.Title>{parcel.parcel_id}</Card.Title></Card.Header>
+                        <Card.Body style={{marginRight: "10px"}}>
+                            <Card.Subtitle className="mb-2 text-muted">{parcel.email}</Card.Subtitle>
+                            <Card.Text>{parcel.name}</Card.Text>
+                            {
+                                loginType === 1 ?
+                                    <Button variant="danger" onClick={()=>deleteParcel(parcel._id)}>Delete this Parcel</Button>:
+                                    <></>
+                            }
+                        </Card.Body>
+                    </Card>
+                );
+            })
     }
-    if (parcels.length === 0)
-        return(
-            <div>
-                <h3 style={{color:"red", marginTop:"100px", textAlign:"center"}}>There are No Parcels</h3>
-            </div>
-        );
-    else
-        return(
-            <div style={{marginTop: "150px", margin: "20px", padding: "20px", display: "flex", flexWrap: "wrap", flexBasis: "content"}}>
+    return(
+        <div style={{marginTop: "150px", margin: "20px", padding: "20px", display: "flex", flexWrap: "wrap", flexBasis: "content"}}>
+            {
+                renderParcels()
+            }
                 
-                {
-                    renderParcels()
-                }
-                
-            </div>
-        );
+        </div>
+    );
 }
 
 export default ParcelList;

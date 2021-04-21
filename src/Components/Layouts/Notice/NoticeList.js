@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {Card, Button} from 'react-bootstrap';
 import axios from 'axios';
 
-import {HashLoader} from 'react-spinners';
-
 function NoticeList({notices}) {
     const [loginType, setLoginType] = useState(null);
 
@@ -47,22 +45,16 @@ function NoticeList({notices}) {
             );
         })
     }
-    if (notices.length === 0)
     return(
-        <div>
-            <h3 style={{color:"red", marginTop:"100px", textAlign:"center"}}>There are No Notices</h3>
+        <div style={{marginTop: "100px", marginRight: "20px", padding: "20px"}}>
+            <h3 style={{color:"black", marginTop:"100px", textAlign:"center"}}>{"There are " + notices.length + " Notices"}</h3>
+            <ul style={{padding: "10px", boxShadow: "2px 2px solid black"}}>
+            {
+                renderNotices()
+            }
+            </ul>
         </div>
     );
-    else
-        return(
-            <div style={{marginTop: "100px", marginRight: "20px", padding: "20px"}}>
-                <ul style={{padding: "10px", boxShadow: "2px 2px solid black"}}>
-                {
-                    renderNotices()
-                }
-                </ul>
-            </div>
-        );
 }
 
 export default NoticeList;

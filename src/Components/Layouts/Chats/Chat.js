@@ -6,7 +6,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import ReactEmoji from 'react-emoji';
 import "./Chat.css";
 //import { Button } from 'bootstrap';
-import {Button, Dropdown} from 'react-bootstrap';
+import {Dropdown} from 'react-bootstrap';
 import {HashLoader} from 'react-spinners';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -34,14 +34,6 @@ function Chat() {
    getUser();
   }, []);
   // console.log("hi this is logintype",loginType);
-  async function deleteChat() {
-    try {
-      await axios.get('http://localhost:5000/chats/delete');
-    }
-    catch(e) {
-      console.log(e);
-    }
-  }
   if (isLoading === false)
   return (
     <div>
@@ -82,7 +74,7 @@ function ChatSub({email, loginType}) {
 
     getMessage();
 
-    console.log(loginType);
+    //console.log(loginType);
 
     const handleMessage = event => {
         const message = event.message;
@@ -108,6 +100,15 @@ function ChatSub({email, loginType}) {
         await axios.post('http://localhost:5000/chats/addMessage', messageData);
     };
 
+    async function deleteChat() {
+      try {
+        await axios.get('http://localhost:5000/chats/delete');
+      }
+      catch(e) {
+        console.log(e);
+      }
+    }
+
     useEffect(() => {
 
         pubnub.addListener({ message: handleMessage });
@@ -124,18 +125,22 @@ function ChatSub({email, loginType}) {
 
                   <h3>Apartment Chat System</h3>
                 </div>
-                <div className="rightInnerContainer">
-                    <Dropdown>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      Menu
-                      </Dropdown.Toggle>
+                {
+                  loginType === 1 ?
+                    <div className="rightInnerContainer">
+                        <Dropdown>
+                          <Dropdown.Toggle variant="success" id="dropdown-basic">
+                          Menu
+                          </Dropdown.Toggle>
 
-                      <Dropdown.Menu>
-                      <Dropdown.Item href=""><button className="btn btn-light">Clear Chat</button></Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                          <Dropdown.Menu>
+                          <Dropdown.Item><button className="btn btn-light" onClick={deleteChat}>Clear Chat</button></Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
 
-                </div>
+                    </div> :
+                    <></>
+                }
             </div>
             <ScrollToBottom className="messages">
                 {getmessage.map((message, index) =>

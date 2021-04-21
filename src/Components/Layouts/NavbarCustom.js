@@ -8,12 +8,10 @@ function NavbarCustom() {
 
     const {loggedIn} = useContext(AuthContext);
     const [loginType, setLoginType] = useState(null);
-    const [loginName, setLoginName] = useState("");
 
     async function getUser() {
         const user = await axios.get('http://localhost:5000/auth/logintype');
         setLoginType(user.data.login_type);
-        setLoginName(user.data.name);
     }
 
     useEffect(()=>{
