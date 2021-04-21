@@ -5,6 +5,9 @@ import axios from 'axios';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import ReactEmoji from 'react-emoji';
 import "./Chat.css";
+//import { Button } from 'bootstrap';
+import {Button} from 'react-bootstrap';
+import {HashLoader} from 'react-spinners';
 
 const pubnub = new PubNub({
   publishKey: 'pub-c-bb8c5518-e3d7-4e6b-933b-f8d7a6694437',
@@ -14,21 +17,49 @@ const pubnub = new PubNub({
 
 function Chat() {
   const [getEmail, setGetEmail] = useState("");
+  const [loginType, setLoginType] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   async function getUser() {
+    setIsLoading(true);
     const user = await axios.get('http://localhost:5000/auth/logintype');
     setGetEmail(user.data.email);
+    setLoginType(loginType);
+    setIsLoading(false);
   }
   useEffect(()=>{
       getUser();
   }, []);
 
+  async function deleteChat() {
+    try {
+      await axios.get('http://localhost:5000/chats/delete');
+    }
+    catch(e) {
+      console.log(e);
+    }
+  }
+  if (isLoading === false)
   return (
-    <PubNubProvider client={pubnub}>
-      <ScrollToBottom>
-      <ChatSub email={getEmail}/>
-      </ScrollToBottom>
-    </PubNubProvider>
+    <div>
+      <PubNubProvider client={pubnub}>
+        <ScrollToBottom>
+        <ChatSub email={getEmail}/>
+        </ScrollToBottom>
+      </PubNubProvider>
+    </div>
   );
+  else {
+    return(
+    <div style={{position:"fixed", textAlign:"center", marginLeft:"30%"}}>
+      <div style={{marginTop: "100px", textAlign:"center", marginBottom:"40%"}}>
+        <h1>Apartment Management System</h1>
+      </div>
+      <div style={{marginTop: "15%", marginLeft:"5%", textAlign:"center"}}>
+        <HashLoader loading size="70"/>
+      </div>
+    </div>
+    );
+  }
 }
 
 function ChatSub({email}) {

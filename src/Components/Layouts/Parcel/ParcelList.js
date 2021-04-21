@@ -46,16 +46,22 @@ function ParcelList({parcels}) {
             );
         })
     }
-
-    return(
-        <div style={{marginTop: "150px", margin: "20px", padding: "20px", display: "flex", flexWrap: "wrap", flexBasis: "content"}}>
-            
-            {
-                renderParcels()
-            }
-            
-        </div>
-    );
+    if (parcels.length === 0)
+        return(
+            <div>
+                <h3 style={{color:"red", marginTop:"100px", textAlign:"center"}}>There are No Parcels</h3>
+            </div>
+        );
+    else
+        return(
+            <div style={{marginTop: "150px", margin: "20px", padding: "20px", display: "flex", flexWrap: "wrap", flexBasis: "content"}}>
+                
+                {
+                    renderParcels()
+                }
+                
+            </div>
+        );
 }
 
 export default ParcelList;

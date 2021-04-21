@@ -23,23 +23,30 @@ function FlatsList() {
             );
         })
     }
+    if (flats.length === 0)
     return(
         <div>
-            <Table responsive striped bordered hover variant="dark" style={{marginTop: "100px"}}>
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Flat Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        renderFlats()
-                    }
-                </tbody>
-            </Table>
+            <h3 style={{color: "red", textAlign:"center", marginTop:"50px"}}>There are no Flats</h3>
         </div>
     );
+    else 
+        return(
+            <div>
+                <Table responsive striped bordered hover variant="dark" style={{marginTop: "100px"}}>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Flat Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            renderFlats()
+                        }
+                    </tbody>
+                </Table>
+            </div>
+        );
 }
 
 
