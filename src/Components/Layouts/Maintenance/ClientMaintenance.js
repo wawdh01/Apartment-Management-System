@@ -51,6 +51,9 @@ function ClientMaintenance() {
 
     async function displayRazorpay(newFlat, newMonth) {
         const user = await axios.get('http://localhost:5000/auth/logintype');
+        const userEmail = user.data.email;
+        const userName = user.data.name;
+        const userMb = user.data.mbNum;
 		const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
 
 		if (!res) {
@@ -74,7 +77,6 @@ function ClientMaintenance() {
 			image: '',  // Receiving organization logo
 			handler: async function (response) {
                 /* Called on getting response from razorpay after making payment */
-                if (!response.error) {
                      /* 1. Make post request to "/verification" with 'data'
                         2. Response from backend will be success/error(signature verification failure) code
                         3. Show alert message accordingly */
@@ -83,25 +85,28 @@ function ClientMaintenance() {
                         order_id: response.razorpay_order_id,
                         signature: response.razorpay_signature,
                         flat: newFlat,   // fill actual data
-                        month: newMonth
+                        month: newMonth,
+                        email: userEmail
                     };
                     const resp = await axios.post('http://localhost:5000/maintenance/verification', data);
-                }
-                else {
-                    // alert error message
-                    console.log(response.error.code + ":" + response.error.description);
-                }
-
-
 			},
 			prefill: {
-				name: user.data.name,    // not displayed
-				email: user.data.email,
-				contact: user.data.mbNum
+				name: userName,    // not displayed
+				email: userEmail,
+				contact: userMb
 			}
 		}
 		const paymentObject = new window.Razorpay(options)
         console.log("open")
+        paymentObject.on('payment.failed', function(response){
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        })
 		paymentObject.open()
 	}
 
@@ -139,7 +144,7 @@ function ClientMaintenance() {
                     isLoading === false ?
                         isGet === true ?
                             maintenanceFlat.length === 0 ?
-                                <h4 style={{color:'red'}}>There are No Flats</h4>:
+                                <h4 style={{color:'red'}}>There are No Maintenance Bill</h4>:
                                 <Table>
                                     <thead>
                                         <th>Flat</th>

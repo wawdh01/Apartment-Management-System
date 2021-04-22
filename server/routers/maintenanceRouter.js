@@ -47,7 +47,7 @@ router.post('/add', async(req,res) => {
             return res.status(400).json({errorMessage: "Please enter month."});
         }
         const existingMonth = await Maintenance.findOne({month: month});
-        console.log(existingMonth);
+        //console.log(existingMonth);
         if (existingMonth) {
             return res.status(400).json({errorMessage: "The maintenance of this payment is already added."});
         }
@@ -68,38 +68,6 @@ router.post('/add', async(req,res) => {
 })
 
 // not tested
-router.post('/update', async(req,res) => {
-    try {
-        const {flat, month, status} = req.body;
-        //console.log(flat, month, status);
-        const filter = { flat: flat, month: month };
-        // const findEntry = await Maintenance.find(filter);
-        // if (!findEntry) {
-        //     return res.status(400).json({errorMessage: "Entry for given month not found."});
-        // }
-        // findEntry.date = (new Date()).toLocaleDateString();
-        // findEntry.status = status;
-        // findEntry.save().then(entry => {
-        //     //res.json();
-        //     console.log("Entry updated");
-        //     })
-        const updateDoc = {
-            $set: {
-              date: (new Date()).toLocaleDateString(),
-              status: status
-            }
-          };
-        const options = { upsert: true };
-        const result = Maintenance.updateOne(filter, updateDoc, options);
-        //console.log(result);
-        const findEntry = await Maintenance.find(filter);
-        console.log(findEntry);
-    } 
-    catch (e) {
-        console.log(e);
-        res.status(500).send();
-    }
-})
 
 router.post('/verification', async (req, res) => {
 	// do a validation
@@ -111,17 +79,34 @@ router.post('/verification', async (req, res) => {
         //console.log(req.body)
         const crypto = require('crypto')
         const shasum = crypto.createHmac('sha256', secret)
-        shasum.update(JSON.stringify(body))
+        //shasum.update(JSON.stringify(body))
+        shasum.update(body);
         const digest = shasum.digest('hex')
-        console.log(digest)
-        console.log(req.body.signature)
-        //const crypto = require('crypto')
-        //generated_signature = crypto.Hmac(req.body.order_id + "|" + req.body.payment_id, razorpay.key_secret);
+        //console.log(digest)
+        //console.log(req.body.signature)
         if (digest === req.body.signature) {
             console.log('request is legit')
             const updateFlat = await Maintenance.findOneAndUpdate({flat: req.body.flat, month: req.body.month}, {status: 1, date: Date()}, {new: true});
-            console.log(updateFlat);
-            /* Update database & send mail */
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: process.env.EMAIL,
+                  pass: process.env.PASSWORD
+                }
+            });
+            var mailOptions = {
+                from: 'apartmentsystem130@gmail.com',
+                to: req.body.email,
+                subject: 'Maintenance Payment paid Succesfully',
+                text: 'Dear User, \n Your Maintenance bill of ' + req.body.month + ' of flat ' + req.body.flat +' is paid Successfully.\n\n\n\nThank You,\nApartment Management System'
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+            });
             res.status(200).send();
         } else {
             // malicious response, 
