@@ -49,7 +49,7 @@ function ClientMaintenance() {
         })
     }
 
-    async function displayRazorpay() {
+    async function displayRazorpay(newFlat, newMonth) {
         const user = await axios.get('http://localhost:5000/auth/logintype');
 		const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
 
@@ -69,18 +69,35 @@ function ClientMaintenance() {
 			currency: data.currency,
 			amount: data.amount.toString(),
 			order_id: data.id,
-			name: 'Maintenance Payment',
-			description: 'Maintenance bill of Apartment Mangament System',
-			image: '',
-			handler: function (response) {
-				alert(response.razorpay_payment_id)
-				alert(response.razorpay_order_id)
-				alert(response.razorpay_signature)
+			name: 'Donation',   // Receiving organization name
+			description: 'Thank you for nothing. Please give us some money',
+			image: '',  // Receiving organization logo
+			handler: async function (response) {
+                /* Called on getting response from razorpay after making payment */
+                if (!response.error) {
+                     /* 1. Make post request to "/verification" with 'data'
+                        2. Response from backend will be success/error(signature verification failure) code
+                        3. Show alert message accordingly */
+                    const data = {
+                        payment_id: response.razorpay_payment_id,
+                        order_id: response.razorpay_order_id,
+                        signature: response.razorpay_signature,
+                        flat: newFlat,   // fill actual data
+                        month: newMonth
+                    };
+                    const resp = await axios.post('http://localhost:5000/maintenance/verification', data);
+                }
+                else {
+                    // alert error message
+                    console.log(response.error.code + ":" + response.error.description);
+                }
+
+
 			},
 			prefill: {
-				name: user.data.name,
+				name: user.data.name,    // not displayed
 				email: user.data.email,
-				contact: '7234636727'
+				contact: user.data.mbNum
 			}
 		}
 		const paymentObject = new window.Razorpay(options)
@@ -141,7 +158,7 @@ function ClientMaintenance() {
                                                         <td>
                                                             {
                                                                 flat.status === 0 ?
-                                                                    <Button variant="danger" onClick={displayRazorpay}>Pay</Button>:
+                                                                    <Button variant="danger" onClick={()=>displayRazorpay(flat.flat, flat.month)}>Pay</Button>:
                                                                 <p style={{color:"green"}}>Paid</p>
                                                             }
                                                         </td>

@@ -52,7 +52,7 @@ router.post('/delete', auth, async(req, res)=>{
         }
         const isDeleted = await Flats.deleteOne({flat: flatNumber});
         if (isDeleted.n == 0) {
-            return res.status(400).json({errorMessage: "The Notice can not be deleted."});
+            return res.status(400).json({errorMessage: "The Flat can not be deleted."});
         }
         res.status(200).send();
     }

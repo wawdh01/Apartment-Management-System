@@ -101,28 +101,37 @@ router.post('/update', async(req,res) => {
     }
 })
 
-router.post('/verification', (req, res) => {
+router.post('/verification', async (req, res) => {
 	// do a validation
-	const secret = '12345678'
-
-	console.log(req.body)
-
-	const crypto = require('crypto')
-
-	const shasum = crypto.createHmac('sha256', secret)
-	shasum.update(JSON.stringify(req.body))
-	const digest = shasum.digest('hex')
-
-	console.log(digest, req.headers['x-razorpay-signature'])
-
-	if (digest === req.headers['x-razorpay-signature']) {
-		console.log('request is legit')
-		// process it
-		require('fs').writeFileSync('payment1.json', JSON.stringify(req.body, null, 4))
-	} else {
-		// pass it
-	}
-	res.json({ status: 'ok' })
+    //console.log(req.body.flat);
+    //console.log(req.body.month);
+	try {
+        const secret = razorpay.key_secret;
+        const body = req.body.order_id + "|" + req.body.payment_id;
+        //console.log(req.body)
+        const crypto = require('crypto')
+        const shasum = crypto.createHmac('sha256', secret)
+        shasum.update(JSON.stringify(body))
+        const digest = shasum.digest('hex')
+        console.log(digest)
+        console.log(req.body.signature)
+        //const crypto = require('crypto')
+        //generated_signature = crypto.Hmac(req.body.order_id + "|" + req.body.payment_id, razorpay.key_secret);
+        if (digest === req.body.signature) {
+            console.log('request is legit')
+            const updateFlat = await Maintenance.findOneAndUpdate({flat: req.body.flat, month: req.body.month}, {status: 1, date: Date()}, {new: true});
+            console.log(updateFlat);
+            /* Update database & send mail */
+            res.status(200).send();
+        } else {
+            // malicious response, 
+            res.status(502).send();
+        }
+    }
+    catch (e) {
+        console.log(e)
+        res.status(500).send();
+    }
 })
 
 router.post('/razorpay', async (req, res) => {
