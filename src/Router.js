@@ -11,6 +11,7 @@ import axios from 'axios';
 import Discussion from './Components/Layouts/Discussion/Discussion';
 import DiscussionSingle from './Components/Layouts/Discussion/DiscussionSingle';
 import Flats from './Components/Layouts/Flats/Flats';
+import Maintenance from './Components/Layouts/Maintenance/Maintenance'
 
 function Router() {
 
@@ -70,6 +71,9 @@ function Router() {
                             </Route>
                             <Route path="/flats">
                                 <Flats></Flats>
+                            </Route>
+                            <Route path="/maintenance">
+                                <Maintenance></Maintenance>
                             </Route>
                         </>
                     )

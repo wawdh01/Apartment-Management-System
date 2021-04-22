@@ -83,27 +83,31 @@ router.post('/update', async(req,res) => {
 })
 
 router.post('/verification', (req, res) => {
-	// do a validation
-	const secret = '12345678'
+    try {
+        const secret = razorpay.key_secret;
+        const body = req.body.order_id + "|" + req.body.payment_id;        
+        //console.log(req.body)
 
-	console.log(req.body)
+        const crypto = require('crypto')
+        const shasum = crypto.createHmac('sha256', secret)
+        shasum.update(JSON.stringify(body))
+        const digest = shasum.digest('hex')
+        //console.log(digest, req.headers['x-razorpay-signature'])
 
-	const crypto = require('crypto')
-
-	const shasum = crypto.createHmac('sha256', secret)
-	shasum.update(JSON.stringify(req.body))
-	const digest = shasum.digest('hex')
-
-	console.log(digest, req.headers['x-razorpay-signature'])
-
-	if (digest === req.headers['x-razorpay-signature']) {
-		console.log('request is legit')
-		// process it
-		require('fs').writeFileSync('payment1.json', JSON.stringify(req.body, null, 4))
-	} else {
-		// pass it
-	}
-	res.json({ status: 'ok' })
+        if (digest === req.body.signature) {
+            console.log('request is legit')
+            // require('fs').writeFileSync('payment1.json', JSON.stringify(req.body, null, 4))
+            /* Update database & send mail */
+            res.status(200).send();
+        } else {
+            // malicious response, 
+            res.status(502).send();
+        }
+    }
+    catch (e) {
+        console.log(e)
+        res.status(500).send();
+    }
 })
 
 router.post('/razorpay', async (req, res) => {
