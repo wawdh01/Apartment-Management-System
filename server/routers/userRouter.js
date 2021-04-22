@@ -29,7 +29,7 @@ router.post("/", async (req, res)=> {
         });
 
         const savedUser = await newUser.save();
-
+        res.json(savedUser);
 
         //This code is used to sign the other user
         /*const token = jwt.sign({

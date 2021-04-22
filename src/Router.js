@@ -13,6 +13,8 @@ import DiscussionSingle from './Components/Layouts/Discussion/DiscussionSingle';
 import Flats from './Components/Layouts/Flats/Flats';
 import Chat from './Components/Layouts/Chats/Chat';
 import ScrollToBottom from 'react-scroll-to-bottom';
+import Maintenance from './Components/Layouts/Maintenance/Maintenance';
+import ClientMaintenance from './Components/Layouts/Maintenance/ClientMaintenance';
 
 function Router() {
 
@@ -77,6 +79,12 @@ function Router() {
                                 <ScrollToBottom >
                                 <Chat></Chat>
                                 </ScrollToBottom >
+                            </Route>
+                            <Route path="/adminMaintenance">
+                                <Maintenance></Maintenance>
+                            </Route>
+                            <Route path="/clientMaintenance">
+                                <ClientMaintenance></ClientMaintenance>
                             </Route>
                         </>
                     )

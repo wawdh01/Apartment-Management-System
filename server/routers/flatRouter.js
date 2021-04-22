@@ -62,4 +62,17 @@ router.post('/delete', auth, async(req, res)=>{
     }
 })
 
+
+router.post('/getFlat', async (req, res)=>{
+    try {
+        const {email} = req.body;
+        const flatData = await Flats.find({email:email});
+        //console.log(flatData);
+        res.json(flatData);
+    }
+    catch(e) {
+        console.log(e);
+        res.status(500).send();
+    }
+})
 module.exports = router;
