@@ -35,6 +35,7 @@ function Register() {
             alert("User Succesfully Registerd...\nThank You !");
         }
         catch(err) {
+            setIsLoading(false);
             setErrMessage(err.response.data.errorMessage);
         }
     }
@@ -78,7 +79,7 @@ function Register() {
                     <Form.Group>
                         <Form.Label style={{marginRight: "20px"}}>User Type</Form.Label>
                         <select onChange={(e)=>setLogin_typeStr(e.target.value)} value={login_typeStr} style={{borderRadius: "5px"}}>
-                            <option value="1" > Secretary</option>
+                            <option value="1" selected> Secretary</option>
                             <option value="2"> Flat Owner</option>
                             <option value="3" > Tennant</option>
                         </select>

@@ -29,7 +29,7 @@ function Maintenance() {
                         <Form.Group style={{ marginLeft:"10%", marginRight:"10%"}}>
                             <Form.Label>Select a Month</Form.Label>
                             <select onChange={(e)=>setGetMonth(e.target.value)} value={getmonth} style={{borderRadius: "5px"}}>
-                                <option value="Jan" >January</option>
+                                <option value="Jan" selected >January</option>
                                 <option value="Feb">February</option>
                                 <option value="Mar" >March</option>
                                 <option value="Apr" >April</option>
@@ -46,7 +46,7 @@ function Maintenance() {
                         <Form.Group style={{marginRight:"20%"}}>
                             <Form.Label>Select a Year</Form.Label>
                             <select onChange={(e)=>setYear(e.target.value)} value={year} style={{borderRadius: "5px"}}>
-                                <option value="2020">2020</option>
+                                <option value="2020" selected>2020</option>
                                 <option value="2021">2021</option>
                                 <option value="2022">2022</option>
                                 <option value="2023">2023</option>
