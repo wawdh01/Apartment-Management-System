@@ -15,6 +15,7 @@ import Chat from './Components/Layouts/Chats/Chat';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import Maintenance from './Components/Layouts/Maintenance/Maintenance';
 import ClientMaintenance from './Components/Layouts/Maintenance/ClientMaintenance';
+import Contact from './Components/Layouts/Contacts/Contact';
 
 function Router() {
 
@@ -85,6 +86,9 @@ function Router() {
                             </Route>
                             <Route path="/clientMaintenance">
                                 <ClientMaintenance></ClientMaintenance>
+                            </Route>
+                            <Route path="/contact">
+                                <Contact></Contact>
                             </Route>
                         </>
                     )

@@ -36,3 +36,4 @@ app.use("/discussion", require('./routers/discussionRouter'));
 app.use("/flats", require("./routers/flatRouter"));
 app.use("/chats", require('./routers/chatRouter'));
 app.use("/maintenance", require('./routers/maintenanceRouter'));
+app.use("/contact", require('./routers/contactRouter'));
