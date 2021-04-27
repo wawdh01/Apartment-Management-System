@@ -87,7 +87,8 @@ function Register() {
                         <select onChange={(e)=>setLogin_typeStr(e.target.value)} value={login_typeStr} style={{borderRadius: "5px"}}>
                             <option value="1" selected="true"> Secretary</option>
                             <option value="2"> Flat Owner</option>
-                            <option value="3" > Tennant</option>
+                            <option value="3"> Tennant</option>
+                            <option value="4"> Watchman</option>
                         </select>
                     </Form.Group>
                     <p style={{color: 'red'}}>{errMessage}</p>

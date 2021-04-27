@@ -36,7 +36,7 @@ function Contact (props) {
     if (isLoading === false)
     return(
         <div>
-            { loginType === 1 ?
+            { (loginType === 1 || loginType === 4) ?
                 <ContactAdd addNewContact={newContact}></ContactAdd> : <></>
             }
             <ContactList contacts={contacts}></ContactList>

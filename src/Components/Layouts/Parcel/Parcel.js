@@ -36,7 +36,7 @@ function Parcel (props) {
     if (isLoading === false)
     return(
         <div>
-            { loginType === 1 ?
+            { (loginType === 1 || loginType === 4) ?
                 <ParcelAdd addNewParcel={newParcel}></ParcelAdd>: <></>
             }
             <ParcelList parcels={parcels}></ParcelList>
