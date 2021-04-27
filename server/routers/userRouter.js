@@ -18,6 +18,9 @@ router.post("/", async (req, res)=> {
         if (password != passwordVerify) {
             return res.status(400).json({errorMessage: "password and passwordVerify doesn't Match."});
         }
+        if (mbNum.toString().length !== 10) {
+            return res.status(400).json({errorMessage:"Mobile Number should be 10 digit"});
+        }
         const existingUser = await Login.findOne({email});
         if (existingUser) {
             return res.status(400).json({errorMessage: "This Email already exists."});
@@ -29,6 +32,28 @@ router.post("/", async (req, res)=> {
         });
 
         const savedUser = await newUser.save();
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD
+            }
+          });
+          var mailOptions = {
+            from: 'apartmentsystem130@gmail.com',
+            to: email,
+            subject: 'Welcome to Apartment Management System',
+            html: "<p>Dear User,<br>Welcome to this Apartment Management System.<br>Your Details are as Follows:<br>Name:<b style='color: green;'>"+ name +"</b><br>Mobile Number:<b style='color: green;'>"+ mbNum +"</b><br>Password:<b style='color: red;'>"+ password +"</b><br><br><br><br><br>Thanks,<br>Apartment Management System<br></p>"
+          };
+          //console.log("Comes Here....");
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
         res.json(savedUser);
 
         //This code is used to sign the other user

@@ -32,7 +32,13 @@ function Register() {
             };
             await axios.post("http://localhost:5000/auth/", registerData);
             setIsLoading(false);
-            alert("User Succesfully Registerd...\nThank You !");
+            alert("User Succesfully Registerd & Mail hase been sent to User\nThank You !");
+            setEmail("");
+            setName("");
+            setMbNumStr("");
+            setPassword("");
+            setPasswordVerify("");
+            setLogin_typeStr("");
         }
         catch(err) {
             setIsLoading(false);
@@ -79,7 +85,7 @@ function Register() {
                     <Form.Group>
                         <Form.Label style={{marginRight: "20px"}}>User Type</Form.Label>
                         <select onChange={(e)=>setLogin_typeStr(e.target.value)} value={login_typeStr} style={{borderRadius: "5px"}}>
-                            <option value="1" selected> Secretary</option>
+                            <option value="1" selected="true"> Secretary</option>
                             <option value="2"> Flat Owner</option>
                             <option value="3" > Tennant</option>
                         </select>
