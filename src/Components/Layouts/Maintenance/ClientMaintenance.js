@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { Button , Table} from 'react-bootstrap';
 import {HashLoader} from 'react-spinners';
+import jsPDF from 'jspdf';
+import "jspdf-autotable";
 
 
 
@@ -110,6 +112,25 @@ function ClientMaintenance() {
 		paymentObject.open()
 	}
 
+    function printMaintenance() {
+        const unit = "pt";
+        const size = "A4";
+        const orientation = "portrait";
+        const marginLeft = 20;
+        const doc = new jsPDF(orientation, unit, size);
+        doc.setFontSize(15);
+        const title = "Maintenace Report";
+        const headers = [["FLAT", "MONTH", "DATE", "STATUS"]];
+        const data = maintenanceFlat.map(flat => [flat.flat, flat.month, flat.date, flat.status === 0 ? "UNPAID":"PAID"]);
+        let content = {
+            startY: 50,
+            head: headers,
+            body: data
+        };
+        doc.text(title, marginLeft, 20);
+        doc.autoTable(content);
+        doc.save("maintenance_report.pdf");
+    }
     async function getMaintenanceData(flats) {
         try {
             const maintainen = [];
@@ -138,13 +159,21 @@ function ClientMaintenance() {
 
     return(
         <div style={{marginTop: "100px", alignItems:"center"}}>
+            <center>
             <Button onClick={getData} variant="primary" style={{alignItems:"center"}}>Get Flat Maintenance Data</Button>
+            </center>
             <div style={{display:"flex", padding:"10px"}}>
                 {
                     isLoading === false ?
                         isGet === true ?
                             maintenanceFlat.length === 0 ?
-                                <h4 style={{color:'red'}}>There are No Maintenance Bill</h4>:
+                                <div>
+                                    <h4 style={{color:'red'}}>There are No Maintenance Bill</h4>
+                                </div>:
+                                <div style={{width:"100%"}}>
+                                <center>
+                                <Button variant="primary" onClick={printMaintenance} style={{marginBottom:"20px"}}>Print Maintenance Status</Button>
+                                </center>
                                 <Table>
                                     <thead>
                                         <th>Flat</th>
@@ -172,7 +201,7 @@ function ClientMaintenance() {
                                             })
                                         }
                                     </tbody>
-                                </Table>:<></>
+                                </Table></div>:<></>
                         :
                         <div  style={{marginTop:"18%", marginLeft:"50%"}}>
                             <HashLoader></HashLoader>

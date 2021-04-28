@@ -9,6 +9,8 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "concurrently": "^6.0.2",
+    "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.14",
     "pubnub": "^4.30.1",
     "pubnub-react": "^2.1.0",
     "react": "^17.0.2",
