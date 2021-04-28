@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Table} from 'react-bootstrap';
+import jsPDF from 'jspdf';
+import "jspdf-autotable";
+import { Button } from 'react-bootstrap';
+
 function FlatsList() {
     const [flats, setFlats] = useState([]);
 
@@ -12,6 +16,27 @@ function FlatsList() {
     useEffect(()=>{
         getFlats();
     }, []);
+
+
+    function printFlats() {
+        const unit = "pt";
+        const size = "A4";
+        const orientation = "portrait";
+        const marginLeft = 20;
+        const doc = new jsPDF(orientation, unit, size);
+        doc.setFontSize(15);
+        const title = "Flat Details";
+        const headers = [["EMAIL", "FLAT NUMBER"]];
+        const data = flats.map(flat => [flat.email, flat.flat]);
+        let content = {
+            startY: 50,
+            head: headers,
+            body: data
+        };
+        doc.text(title, marginLeft, 20);
+        doc.autoTable(content);
+        doc.save("flatDetails.pdf");
+    }
 
     function renderFlats() {
         return flats.map((flat)=>{
@@ -32,6 +57,9 @@ function FlatsList() {
     else 
         return(
             <div>
+                <center>
+                    <Button variant="primary" onClick={printFlats} style={{marginTop:"50px"}}>Get PDF Format</Button>
+                </center>
                 <Table responsive striped bordered hover variant="dark" style={{marginTop: "100px"}}>
                     <thead>
                         <tr>

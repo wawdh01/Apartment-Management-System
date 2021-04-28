@@ -12,7 +12,11 @@ router.post("/", async (req, res)=> {
         if (!email || !name || !mbNum || !password || !passwordVerify || !login_type) {
             return res.status(400).json({errorMessage: "Please enter all Required fields."});
         }
-        if (password.length < 6) {
+        var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (! email.match(mailformat)) {
+            return res.status(400).json({errorMessage:"Email Format not as expected"});
+        }
+        if (password.length <= 6) {
             return res.status(400).json({errorMessage: "Please enter a password more than 6 characters."});
         }
         if (password != passwordVerify) {
@@ -80,6 +84,13 @@ router.post("/login", async (req, res) => {
 
         if (!email || !password) {
             return res.status(400).json({errorMessage: "Please enter all Required fields."});
+        }
+        var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (! email.match(mailformat)) {
+            return res.status(400).json({errorMessage:"Email Format not as expected"});
+        }
+        if (password.length <= 6) {
+            return res.status(400).json({errorMessage: "Please enter a password more than 6 characters."});
         }
         const existingUser = await Login.findOne({email});
         //console.log(existingUser);
