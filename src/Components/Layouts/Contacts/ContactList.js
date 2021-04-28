@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {Card, Button} from 'react-bootstrap';
+import {Button, Image} from 'react-bootstrap';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import axios from 'axios';
+import contactImg from './imp_contact.png';
 
 function ContactList({contacts}) {
     const [loginType, setLoginType] = useState(null);
@@ -27,16 +28,30 @@ function ContactList({contacts}) {
         getUser();
     }, []);
 
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
 
     function renderContacts() {
         return contacts.map((contact)=> {
+            const flipD = (getRandomInt(1,100) % 2 === 0 ) ? "horizontal":"vertical";
             return(
                 <div style={{alignItems:"center", margin:"20px"}}>
-                <Flippy flipOnHover={true} flipDirection="vertical" style={{ width: '400px', height: '200px' }}>
+                <Flippy flipOnHover={true} flipDirection={flipD} style={{ width: '400px', height: '200px' }}>
                     <FrontSide style={{backgroundColor: 'yellow'}}>
-                    <h2 style={{textAlign:"center"}}><b>{contact.name}</b></h2>
-                    <hr></hr>
-                    <p style={{textAlign:"center"}}><i>{contact.role}</i></p>
+                    <div style={{display:"flex"}}>
+                        <div style={{marginRight:"10px", marginTop:"20px"}}>
+                            <Image src={contactImg}></Image>
+                        </div>
+                        <div style={{marginLeft:"20px", marginTop:"8%"}}>
+                            <h2 style={{textAlign:"center"}}><b>{contact.name}</b></h2>
+                            <hr></hr>
+                            <p style={{textAlign:"center"}}><i>{contact.role}</i></p>
+                        </div>
+                    </div>
                     </FrontSide>
                     <BackSide style={{ backgroundColor: 'green'}}>
                     <p style={{textAlign:"center"}}>{contact.address}</p>
