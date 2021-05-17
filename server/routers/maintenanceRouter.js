@@ -8,8 +8,8 @@ const Razorpay = require('razorpay')
 const nodemailer = require('nodemailer');
 
 const razorpay = new Razorpay({
-	key_id: 'rzp_test_RYURSE5lXYde0Z',
-	key_secret: 'G7BV55Jd9cLh2p0wYTWodIdh'
+	key_id: process.env.KEY_ID,
+	key_secret: process.env.KEY_SECRET,
 })
 
 router.get('/', async(req, res)=>{
@@ -95,7 +95,7 @@ router.post('/verification', async (req, res) => {
                 }
             });
             var mailOptions = {
-                from: 'apartmentsystem130@gmail.com',
+                from: process.env.EMAIL,
                 to: req.body.email,
                 subject: 'Maintenance Payment paid Succesfully',
                 text: 'Dear User, \n Your Maintenance bill of ' + req.body.month + ' of flat ' + req.body.flat +' is paid Successfully.\n\n\n\nThank You,\nApartment Management System'
@@ -176,7 +176,7 @@ router.get('/sendEmail', async (req, res)=>{
             const mainte = await Maintenance.find({flat:flat, status: 0});
             for (j = 0; j < mainte.length; j++) {
                 var mailOptions = {
-                    from: 'apartmentsystem130@gmail.com',
+                    from: process.env.EMAIL,
                     to: email,
                     subject: 'Maintenance Payment Unpaid',
                     text: 'Dear User, \n Your Maintenance bill of ' + mainte[j].month + ' of flat ' + mainte[j].flat +' is unpaid.\n\n\n\nThank You,\nApartment Management System'

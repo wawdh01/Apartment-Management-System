@@ -45,7 +45,7 @@ router.post("/", async (req, res)=> {
             }
           });
           var mailOptions = {
-            from: 'apartmentsystem130@gmail.com',
+            from: process.env.EMAIL,
             to: email,
             subject: 'Welcome to Apartment Management System',
             html: "<p>Dear User,<br>Welcome to this Apartment Management System.<br>Your Details are as Follows:<br>Name:<b style='color: green;'>"+ name +"</b><br>Mobile Number:<b style='color: green;'>"+ mbNum +"</b><br>Password:<b style='color: red;'>"+ password +"</b><br><br><br><br><br>Thanks,<br>Apartment Management System<br></p>"
