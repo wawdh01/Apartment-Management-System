@@ -70,7 +70,7 @@ function ClientMaintenance() {
 		console.log(data)
         console.log("open1")
 		const options = {
-			key:'rzp_test_RYURSE5lXYde0Z',
+			key:'',
 			currency: data.currency,
 			amount: data.amount.toString(),
 			order_id: data.id,
